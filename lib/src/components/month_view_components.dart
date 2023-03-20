@@ -120,74 +120,91 @@ class FilledCell<T extends Object?> extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: backgroundColor,
-      child: Column(
+      child: Stack(
+        alignment: Alignment.topRight,
+        fit: StackFit.expand,
         children: [
-          SizedBox(
-            height: 5.0,
-          ),
-          CircleAvatar(
-            radius: highlightRadius,
-            backgroundColor:
-                shouldHighlight ? highlightColor : Colors.transparent,
-            child: Text(
-              dateStringBuilder?.call(date) ?? "${date.day}",
-              style: TextStyle(
-                color: shouldHighlight
-                    ? highlightedTitleColor
-                    : isInMonth
-                        ? titleColor
-                        : titleColor.withOpacity(0.4),
-                fontSize: 12,
+          if (events.isNotEmpty && events[0].imageUrl != null)
+            Image.network(
+              events[0].imageUrl!,
+              fit: BoxFit.cover,
+            )
+          else
+            Container(),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(2.0),
+                child: CircleAvatar(
+                  radius: highlightRadius,
+                  backgroundColor:
+                      shouldHighlight ? highlightColor : Colors.transparent,
+                  child: Text(
+                    dateStringBuilder?.call(date) ?? "${date.day}",
+                    style: TextStyle(
+                      color: shouldHighlight
+                          ? highlightedTitleColor
+                          : isInMonth
+                              ? titleColor
+                              : titleColor.withOpacity(0.4),
+                      fontSize: 12,
+                    ),
+                  ),
+                ),
               ),
-            ),
-          ),
-          if (events.isNotEmpty)
-            Expanded(
-              child: Container(
-                margin: EdgeInsets.only(top: 5.0),
-                clipBehavior: Clip.antiAlias,
-                decoration: BoxDecoration(),
-                child: SingleChildScrollView(
-                  physics: BouncingScrollPhysics(),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: List.generate(
-                      events.length,
-                      (index) => GestureDetector(
-                        onTap: () =>
-                            onTileTap?.call(events[index], events[index].date),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: events[index].color,
-                            borderRadius: BorderRadius.circular(4.0),
-                          ),
-                          margin: EdgeInsets.symmetric(
-                              vertical: 2.0, horizontal: 3.0),
-                          padding: const EdgeInsets.all(2.0),
-                          alignment: Alignment.center,
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  events[index].title,
-                                  overflow: TextOverflow.clip,
-                                  maxLines: 1,
-                                  style: events[0].titleStyle ??
-                                      TextStyle(
-                                        color: events[index].color.accent,
-                                        fontSize: 12,
-                                      ),
+              Expanded(child: Container()),
+              if (events.isNotEmpty)
+                Container(
+                  clipBehavior: Clip.antiAlias,
+                  decoration: BoxDecoration(color: Colors.black45),
+                  child: SingleChildScrollView(
+                    physics: BouncingScrollPhysics(),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      mainAxisSize: MainAxisSize.min,
+                      children: List.generate(
+                        events.length,
+                        (index) => GestureDetector(
+                          onTap: () => onTileTap?.call(
+                              events[index], events[index].date),
+                          child: Container(
+                            // decoration: BoxDecoration(
+                            //   color: events[index].color.withOpacity(0.5),
+                            // ),
+                            margin: EdgeInsets.symmetric(
+                                vertical: 2.0, horizontal: 3.0),
+                            padding: const EdgeInsets.all(2.0),
+                            alignment: Alignment.center,
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    events[index].title,
+                                    overflow: TextOverflow.clip,
+                                    maxLines: 1,
+                                    style: events[0].titleStyle ??
+                                        TextStyle(
+                                          color: events[index].color.accent,
+                                          fontSize: 12,
+                                        ),
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ),
+            ],
+          ),
+          if (events.isNotEmpty && events[0].rightTopWidget != null)
+            Container(
+                alignment: Alignment.topRight, child: events[0].rightTopWidget!)
+          else
+            Container()
         ],
       ),
     );
@@ -219,8 +236,9 @@ class MonthPageHeader extends CalendarPageHeader {
               dateStringBuilder ?? MonthPageHeader._monthStringBuilder,
           headerStyle: headerStyle,
         );
+
   static String _monthStringBuilder(DateTime date, {DateTime? secondaryDate}) =>
-      "${date.month} - ${date.year}";
+      "${date.year} ${date.month}";
 }
 
 class WeekDayTile extends StatelessWidget {
@@ -254,7 +272,7 @@ class WeekDayTile extends StatelessWidget {
     return Container(
       alignment: Alignment.center,
       margin: EdgeInsets.zero,
-      padding: EdgeInsets.symmetric(vertical: 10.0),
+      padding: EdgeInsets.symmetric(vertical: 4.0),
       decoration: BoxDecoration(
         color: backgroundColor,
         border: displayBorder
@@ -268,8 +286,8 @@ class WeekDayTile extends StatelessWidget {
         weekDayStringBuilder?.call(dayIndex) ?? Constants.weekTitles[dayIndex],
         style: textStyle ??
             TextStyle(
-              fontSize: 17,
-              color: Constants.black,
+              fontSize: 12,
+              color: Colors.black54,
             ),
       ),
     );

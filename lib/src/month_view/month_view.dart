@@ -145,7 +145,7 @@ class MonthView<T extends Object?> extends StatefulWidget {
     this.maxMonth,
     this.controller,
     this.initialMonth,
-    this.borderSize = 1,
+    this.borderSize = 0.5,
     this.cellAspectRatio = 0.55,
     this.headerBuilder,
     this.weekDayBuilder,
@@ -370,7 +370,7 @@ class MonthViewState<T extends Object?> extends State<MonthView<T>> {
     _width = widget.width ?? MediaQuery.of(context).size.width;
     _cellWidth = _width / 7;
     _cellHeight = _cellWidth / widget.cellAspectRatio;
-    _height = _cellHeight * 6;
+    _height = _cellHeight * 5;
   }
 
   void _assignBuilders() {
@@ -601,7 +601,7 @@ class _MonthPageBuilder<T> extends StatelessWidget {
           crossAxisCount: 7,
           childAspectRatio: cellRatio,
         ),
-        itemCount: 42,
+        itemCount: 35,
         shrinkWrap: true,
         itemBuilder: (context, index) {
           final events = controller.getEventsOnDay(monthDays[index]);

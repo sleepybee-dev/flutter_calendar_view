@@ -82,7 +82,7 @@ class CalendarPageHeader extends StatelessWidget {
               padding: headerStyle.leftIconPadding,
               icon: headerStyle.leftIcon ??
                   Icon(
-                    Icons.chevron_left,
+                    Icons.chevron_left_sharp,
                     size: 30,
                     color: iconColor,
                   ),
@@ -90,10 +90,17 @@ class CalendarPageHeader extends StatelessWidget {
           Expanded(
             child: InkWell(
               onTap: onTitleTapped,
-              child: Text(
-                dateStringBuilder(date, secondaryDate: secondaryDate),
-                textAlign: headerStyle.titleAlign,
-                style: headerStyle.headerTextStyle,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: Text(date.year.toString(), style: TextStyle(fontSize: 12),),
+                  ),
+                  Text(date.month.toString(), style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                ],
               ),
             ),
           ),
@@ -107,7 +114,7 @@ class CalendarPageHeader extends StatelessWidget {
               padding: headerStyle.rightIconPadding,
               icon: headerStyle.rightIcon ??
                   Icon(
-                    Icons.chevron_right,
+                    Icons.chevron_right_sharp,
                     size: 30,
                     color: iconColor,
                   ),

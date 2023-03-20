@@ -56,6 +56,7 @@ List<CalendarEventData<Event>> _events = [
     event: Event(title: "Wedding anniversary"),
     title: "Wedding anniversary",
     description: "Attend uncle's wedding anniversary.",
+    rightTopWidget: Icon(Icons.umbrella, color: Colors.amber,)
   ),
   CalendarEventData(
     date: _now,
@@ -89,6 +90,7 @@ List<CalendarEventData<Event>> _events = [
         16),
     event: Event(title: "Team Meeting"),
     title: "Team Meeting",
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/e/eb/Ash_Tree_-_geograph.org.uk_-_590710.jpg",
     description: "Team Meeting",
   ),
   CalendarEventData(
